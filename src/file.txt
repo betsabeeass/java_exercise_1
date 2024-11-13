@@ -1,0 +1,16 @@
+L’objectif de cette partie finale est d’implémenter un algorithme de prédiction en fonction de la fréquence
+d’utilisation de mots d’un texte, classiquement utilisé sur les téléphones portables.
+
+Créer une nouvelle commande Predict se déclenchant quand l’utilisateur écrit predict.
+
+Cette commande demandera un chemin de fichier à l’utilisateur avec une question explicite pour apprendre le lexique du texte
+
+en cas d’échec de la lecture, afficher le message "Unreadable file: " suivi du nom de la classe de l’exception et de son message
+
+dans le cas où le texte est lu avec succès par le programme, la commande calculera pour chaque mot, le mot le plus fréquent arrivant juste après
+
+finalement le programme demandera à l’utilisateur d’écrire un mot
+
+si le mot n’existe pas dans le texte analysé, afficher un message d’erreur
+
+si le mot existe, reconstituer et afficher la phrase statistiquement la plus plausible avec une limite de 20 mots

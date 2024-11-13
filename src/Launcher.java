@@ -19,7 +19,8 @@ public class Launcher {
         List<Command> commands = Arrays.asList (
                 new Quit(),
                 new Fibo(),
-                new Freq()
+                new Freq(),
+                new Predict()
         );
 
         while (true) {
