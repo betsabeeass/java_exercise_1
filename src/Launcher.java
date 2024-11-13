@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -5,69 +6,44 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static jdk.jfr.consumer.EventStream.openFile;
+import java.util.List;
 
 public class Launcher {
-    public static void main(String[] args) throws IOException {
-        System.out.println("Welcome to Java Programming");
-        Scanner scanner = new Scanner(System.in);
 
-        for (; ;) {
+    public static void main(String[] args) {
+
+        System.out.println("Welcome! Type a command:");
+
+        Scanner scanner = new Scanner(System.in);
+        List<Command> commands = Arrays.asList (
+                new Quit(),
+                new Fibo(),
+                new Freq()
+        );
+
+        while (true) {
+            System.out.print("> ");
             String input = scanner.nextLine();
-            if (input.equals("quit")) {
+
+            Command command = commands.stream()
+                    .filter(cmd -> cmd.name().equalsIgnoreCase(input))
+                    .findFirst()
+                    .orElse(null);
+
+            if (command == null) {
+                System.out.println("Unknown command");
+                continue;
+            }
+
+            boolean shouldExit = command.run(scanner);
+
+            if (shouldExit) {
                 break;
             }
-            if (input.equals("fibo")) {
-
-                System.out.println("Enter the number: ");
-                int number = scanner.nextInt();
-                System.out.println(fibonacci(number));
-
-            }
-            if (input.equals("freq")) {
-                System.out.println("Quel est le chemin du fichier: ");
-                Path filePath = Paths.get(scanner.nextLine());
-
-                try {
-                    String content = Files.readString(filePath);
-                    String ThreeWord = findTopThreeWord(content);
-                    System.out.println(" " +ThreeWord);
-
-
-                } catch (Exception e) {
-                    System.out.println("Unreadable file");
-
-                }
-
-            } else {
-                System.out.println("Unknown command");
-            }
         }
-    }
 
-    public static int fibonacci(int n) {
-        if (n == 0) {
-            return 0;
-        } else if (n == 1) {
-            return 1;
-        } else {
-            return fibonacci(n - 1) + fibonacci(n - 2);
-        }
-    }
-
-    public static String findTopThreeWord(String content) {
-        String[] words = content.replaceAll("\\p{Punct}", "").toLowerCase().split("\\s+");
-        Map<String, Long> wordCount = Arrays.stream(words).filter(word -> !word.isBlank()).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-        return wordCount.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue(Comparator.reverseOrder())).limit(3).map(Map.Entry::getKey).collect(Collectors.joining(" "));
+        scanner.close();
     }
 }
-
-
-
-
-
 
